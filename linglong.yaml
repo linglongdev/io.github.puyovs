@@ -1,0 +1,30 @@
+version: "1"
+
+package:
+  id: io.github.puyovs
+  name: puyovs
+  version: 3.1.0.1
+  kind: app
+  description: |
+    A puzzle game similar to Puyo Puyo.
+
+command:
+  - /opt/apps/io.github.puyovs/files/bin/PuyoVS
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/puyonexus/puyovs.git
+    version: master
+    commit: 4c3ba9cb3c9c0ec3d2e7b0a930b72d6e41e65fe0
+
+build: |
+  cd /project/linglong/sources/puyovs.git
+  git apply ../../../0001-install.patch
+  mkdir build
+  cd build
+  cmake .. \
+        -DCMAKE_INSTALL_PREFIX=${PREFIX}
+  cmake --build . --target install -j$(nproc --all)
